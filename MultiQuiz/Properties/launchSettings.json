@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MultiQuizIO": {
+      "commandName": "Project",
+      "commandLineArgs": "Quizzes/DataTwo.txt"
+    }
+  }
+}

@@ -1,23 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace MultiQuizIO
 {
     class Program
     {
-
-        private readonly static int totalQuestions = 10;
-        private static int currentQuestion = 0, score = 0;
-        private static List<QuizQuestion> questions = new List<QuizQuestion>();
-
         static void Main (string[] args)
         {
+            int currentQuestion = 0, score = 0;
+            var filename = "Quizzes/data.txt";
 
-            SetQuestions();
+            if (args.Length > 0)
+            {
+                filename = args[0];
+            }
+
+            var questions = SetQuestions(filename);
+
             Console.WriteLine("Welcome to the Quiz");
-            Console.WriteLine($"Please answer the {totalQuestions} multiple choice questions below \n\n");
+            Console.WriteLine($"Please answer the {questions.Count} multiple choice questions below \n\n");
 
-            for (; currentQuestion < totalQuestions; currentQuestion++)
+            for (; currentQuestion < questions.Count; currentQuestion++)
             {
                 Console.WriteLine("QUESTION " + (currentQuestion + 1));
                 Console.WriteLine(questions[currentQuestion].Question);
@@ -47,25 +51,35 @@ namespace MultiQuizIO
                 }
             }
 
-            Console.WriteLine($"\n Your Total Score is: {score} out of {totalQuestions}.");
+            Console.WriteLine($"\n Your Total Score is: {score} out of {questions.Count}.");
             Console.Read();
         }
 
-        private static void SetQuestions()
-        {   
-            System.IO.StreamReader file = new System.IO.StreamReader("data.txt");
-            string line;
+        private static List<QuizQuestion> SetQuestions (string fileName)
+        {
             QuizQuestion currentQuestion = null;
             Random rand = new Random();
+            List<QuizQuestion> questions = new List<QuizQuestion>();
+            string[] quizFile = null;
             
-            while ((line = file.ReadLine()) != null)
+            try
             {
-                if (line.Contains("$Q"))
+                quizFile = File.ReadAllLines(fileName);
+            }
+            catch
+            {
+                Console.WriteLine("Error reading input file");
+                Environment.Exit(1);
+            }
+
+            foreach (var line in quizFile)
+            {
+                if (line.StartsWith("$Q"))
                 {
                     currentQuestion = new QuizQuestion();
                     currentQuestion.Question = line.Substring(3);
                 }
-                if (line.Contains("$A"))
+                else if (line.StartsWith("$A"))
                 {
                     currentQuestion.Answers = line.Substring(3).Split(',');
                     
@@ -85,8 +99,10 @@ namespace MultiQuizIO
                     questions.Add(currentQuestion);
                 }
             }
+            return questions;
         }
     }
+    
     class QuizQuestion
     {
         public QuizQuestion ()

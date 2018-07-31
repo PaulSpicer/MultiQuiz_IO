@@ -1,0 +1,29 @@
+$Q How many US presidents have there been efjnewfwerfgewgfwer?
+$A 43, 41, 39, 37, 44
+
+$Q Other than eggs, what is a primary ingredient in Eggs Florentine?
+$A Spinach, Ham, Avacado, Gorgonzola
+
+$Q Adele performed the theme song to which James Bond film?
+$A Skyfall, Quantum of Solace, Casino Royale, Goldeneye, From Russia With Love
+
+$Q Which movie was the first to win 11 Academy Awards?
+$A Ben-Hur, Titanic, La La Land, Sound of Music, The Room
+
+$Q How many spaces are there on a standard Monopoly Board?
+$A 40, 80, 20, 60
+
+$Q Which country hosted the summer olypics in 2016?
+$A Brazil, China, France, Spain, Argentina
+
+$Q What is the largest planet in our Solar System?
+$A Jupiter, Earth, Venus, Mars, Saturn, Mercury, Uranus
+
+$Q How many geographic counties are there in England?
+$A 48, 42, 46, 56, 58, 60
+
+$Q How high is Mount Everest in metres?
+$A 8848, 8852, 8811, 8879, 8881
+
+$Q Which of these in not a Nintendo video game character?
+$A Metroid, Link, Mario, Donkey Kong, Luigi
