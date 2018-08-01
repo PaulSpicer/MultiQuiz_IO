@@ -10,11 +10,49 @@ namespace MultiQuizIO
         {
             int currentQuestion = 0, score = 0;
             var filename = "Quizzes/data.txt";
+            string[] quizFiles = null;
 
             if (args.Length > 0)
             {
                 filename = args[0];
             }
+            else
+            {
+                try
+                {
+                    quizFiles = Directory.GetFiles("quizzes", "*.txt", SearchOption.AllDirectories);
+                    if (quizFiles.Length == 0)
+                    {
+                        Console.WriteLine("No quizzes found, please add some and try again");
+                        Environment.Exit(3);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    Environment.Exit(2);
+                }
+
+                Console.WriteLine("The following quizzes are available: \n");
+                for (int i = 0; i < quizFiles.Length; i++)
+                {
+                    Console.WriteLine($"{i + 1}) {quizFiles[i]}");
+                }
+                QuizSelect:
+                Console.Write("\nSelect which quiz to play: ");
+                var input = Console.ReadLine();
+                if (int.TryParse(input, out int choiceInt) && (choiceInt > 0 && choiceInt <= quizFiles.Length))
+                {
+                    filename = quizFiles[choiceInt - 1];
+                }
+                else
+                {
+                    Console.Write("Invalid input, try again.\n");
+                    goto QuizSelect;
+                }
+            }
+
+            Console.WriteLine($"Using {filename} for quiz file\n");
 
             var questions = SetQuestions(filename);
 
@@ -32,7 +70,7 @@ namespace MultiQuizIO
                 Answering:
                 Console.Write("\nANSWER: ");
                 string input = Console.ReadLine();
-                if (int.TryParse(input, out int answerInt))
+                if (int.TryParse(input, out int answerInt) && (answerInt > 0 && answerInt <= questions[currentQuestion].Answers.Length))
                 {
                     if (answerInt - 1 == questions[currentQuestion].CorrectAnswer)
                     {
@@ -46,7 +84,7 @@ namespace MultiQuizIO
                 }
                 else
                 {
-                    Console.WriteLine("\nThat is not a valid answer, try again \n");
+                    Console.WriteLine("\nThat is not a valid answer, try again. \n");
                     goto Answering;
                 }
             }
