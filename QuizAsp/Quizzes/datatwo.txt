@@ -1,11 +1,4 @@
-$MTOT
-$HSCO
-$HPLA
-&HTIM
-&UPDA
-
-
-$Q How many US presidents have there been?
+$Q How many US presidents have there been efjnewfwerfgewgfwer?
 $A 43, 41, 39, 37, 44
 
 $Q Other than eggs, what is a primary ingredient in Eggs Florentine?

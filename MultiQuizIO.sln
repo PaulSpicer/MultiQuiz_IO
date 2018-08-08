@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiQuizIO", "MultiQuiz\MultiQuizIO.csproj", "{7C870535-C222-468B-897E-FBF6B5A062FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizAsp", "QuizAsp\QuizAsp.csproj", "{2F4EAFD3-5AF2-4503-90D2-4C11745BA237}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizLib", "QuizLib\QuizLib.csproj", "{2FF4301B-89A8-4BF7-9CAC-E4586CB4E136}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7C870535-C222-468B-897E-FBF6B5A062FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C870535-C222-468B-897E-FBF6B5A062FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C870535-C222-468B-897E-FBF6B5A062FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4EAFD3-5AF2-4503-90D2-4C11745BA237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4EAFD3-5AF2-4503-90D2-4C11745BA237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4EAFD3-5AF2-4503-90D2-4C11745BA237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4EAFD3-5AF2-4503-90D2-4C11745BA237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FF4301B-89A8-4BF7-9CAC-E4586CB4E136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FF4301B-89A8-4BF7-9CAC-E4586CB4E136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FF4301B-89A8-4BF7-9CAC-E4586CB4E136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FF4301B-89A8-4BF7-9CAC-E4586CB4E136}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

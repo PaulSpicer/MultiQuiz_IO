@@ -1,0 +1,44 @@
+
+html
+{
+	padding: 0;
+	margin: 0;
+}
+
+body 
+{
+	font-family: arial, sans-serif;
+	padding: 0;
+	margin: 0;
+}
+
+input 
+{
+	margin-bottom: 0.75rem;
+}
+
+.sub_button 
+{
+	margin-top: 0.5rem;
+	color: #bfb3db;
+	background-color: #0a021e;
+	padding: 0.75em;
+	font-weight: bold;
+	border-radius: 0.9em;
+	font-size: 12pt;
+}
+
+.banner 
+{
+	background-color: #0a021e;
+	color: #bfb3db;
+	font-size: 30pt;
+	padding:2rem;
+	border-bottom: 10px #dbcdb3 solid;
+
+}
+
+.quizblock
+{
+	padding-left: 2rem;
+}

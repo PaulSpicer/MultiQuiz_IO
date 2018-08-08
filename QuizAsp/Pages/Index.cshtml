@@ -1,0 +1,28 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="banner">
+    SUPER DUPER MEGA QUIZ SITE
+</div>
+<div class="quizblock">
+    <h1>A Quiz</h1>
+    Current Score: 0 <br />
+    @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        @Model.SuccessMessage
+    }
+
+    <h4>@Model.Question</h4>
+    <form method="post" action="/index">
+        @Html.AntiForgeryToken()       
+        @for (var i = 0; i < Model.Answers.Length; i++)
+        {
+            <input id="rad@(i)" type="radio" name="answer" value="@i" /><label for="rad@(i)">@Model.Answers[i]</label><br>
+
+        }
+        <input class="sub_button" type="submit" name="submitbutton" value="Answer" />
+    </form>
+</div>
