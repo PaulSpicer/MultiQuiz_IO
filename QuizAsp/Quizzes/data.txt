@@ -1,11 +1,4 @@
-$MTOT
-$HSCO
-$HPLA
-&HTIM
-&UPDA
-
-
-$Q How many US presidents have there been?
+$Q How many people have become president of the United States?
 $A 43, 41, 39, 37, 44
 
 $Q Other than eggs, what is a primary ingredient in Eggs Florentine?
@@ -20,7 +13,7 @@ $A Ben-Hur, Titanic, La La Land, Sound of Music, The Room
 $Q How many spaces are there on a standard Monopoly Board?
 $A 40, 80, 20, 60
 
-$Q Which country hosted the summer olypics in 2016?
+$Q Which country hosted the Summer Olympics in 2016?
 $A Brazil, China, France, Spain, Argentina
 
 $Q What is the largest planet in our Solar System?

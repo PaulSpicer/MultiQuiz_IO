@@ -15,24 +15,30 @@ namespace QuizAsp.Pages
         const string QuestionNumberKey = "QuestionNumber";
         const string AnswerCorrectKey = "AnswerCorrect";
         const string AnswerPreviousKey = "AnswerPreviousIndex";
+        const string CurrentScoreKey = "CurrentScore";
 
         public string Question { get; set; }
         public string[] Answers { get; set; }
         public int CurrentQuestionNumber { get; set; }
+        public int CurrentScore { get; set; }
 
         public string SuccessMessage;
         public int previousAnswer = -1;
 
         public void OnGet ()
         {
-            if (!HttpContext.Session.TryGetInt(QuestionNumberKey, out var currentQuestion))
+            if (!HttpContext.Session.TryGetInt(QuestionNumberKey, out var currentQuestion) ||
+               (!HttpContext.Session.TryGetInt(CurrentScoreKey, out var currentScore)))
             {
                 CurrentQuestionNumber = 0;
+                CurrentScore = 0;
                 HttpContext.Session.Set(QuestionNumberKey, BitConverter.GetBytes(CurrentQuestionNumber));
+                HttpContext.Session.Set(CurrentScoreKey, BitConverter.GetBytes(CurrentScore));
             }
             else
             {
                 CurrentQuestionNumber = currentQuestion;
+                CurrentScore = currentScore;
             }
 
             var questions = QuizCache.LoadQuiz("Quizzes/data.txt");
@@ -41,9 +47,18 @@ namespace QuizAsp.Pages
 
             if (TempData.TryGetValue(AnswerCorrectKey, out var answerCorrect))
             {
-                SuccessMessage = (bool)answerCorrect 
-                    ? "Correct Answer" 
-                    : $"Incorrect Answer. The correct answer is: {questions[CurrentQuestionNumber].Answers[questions[CurrentQuestionNumber].CorrectAnswer]}.";
+
+                if ((bool)answerCorrect)
+                {
+                    SuccessMessage = "Correct Answer";
+                    CurrentScore++;
+                    HttpContext.Session.Set(CurrentScoreKey, BitConverter.GetBytes(CurrentScore));
+                }
+                else
+                {
+                    SuccessMessage = $"Incorrect Answer. The correct answer is: { questions[CurrentQuestionNumber].Answers[questions[CurrentQuestionNumber].CorrectAnswer]}.";
+                }
+
                 TempData.TryGetValue(AnswerPreviousKey, out var answerIndex);
                 previousAnswer = (int)answerIndex;
             }
@@ -73,8 +88,7 @@ namespace QuizAsp.Pages
 
                 TempData[AnswerPreviousKey] = answer;
                 TempData[AnswerCorrectKey] = (answer == questions[CurrentQuestionNumber].CorrectAnswer);
-            }
-            
+            }           
             return new RedirectResult("/");
         }
     }
