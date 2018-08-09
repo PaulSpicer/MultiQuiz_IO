@@ -5,8 +5,6 @@
 
     bool isAnswerPage = !string.IsNullOrEmpty(Model.SuccessMessage);
     int previousAnswer = @Model.previousAnswer;
-
-
 }
 
 <div class="banner">
@@ -22,10 +20,12 @@
         @Html.AntiForgeryToken()
         @for (var i = 0; i < Model.Answers.Length; i++)
         {
-            <input id="rad@(i)" type="radio" name="answer" value="@i" @(isAnswerPage && i == previousAnswer ? "checked" : "") @(isAnswerPage ? "disabled":"")/><label for="rad@(i)">@Model.Answers[i]</label><br>
-
+            <input id="rad@(i)"
+                   type="radio"
+                   name="answer"
+                   value="@i" @(isAnswerPage && i == previousAnswer ? "checked" : "") @(isAnswerPage ? "disabled":"")/><label for="rad@(i)">@Model.Answers[i]</label><br>
         }
-        <input class="sub_button" type="submit" name="submitbutton" value="Answer" />
+        <input class="sub_button" type="submit" name="@(isAnswerPage ? "nextbutton" : "answerbutton")" value="@(isAnswerPage ? "Next Question" : "Answer")")/>
     </form>
     <div class="answerFeedback">
         @if (isAnswerPage)
