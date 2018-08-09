@@ -42,3 +42,9 @@ input
 {
 	padding-left: 2rem;
 }
+
+.answerFeedback
+{
+    font-weight: bold;
+    font-size: 20pt;
+}

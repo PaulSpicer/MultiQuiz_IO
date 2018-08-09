@@ -14,12 +14,14 @@ namespace QuizAsp.Pages
     {
         const string QuestionNumberKey = "QuestionNumber";
         const string AnswerCorrectKey = "AnswerCorrect";
+        const string AnswerPreviousKey = "AnswerCorrectIndex";
 
         public string Question { get; set; }
         public string[] Answers { get; set; }
         public int QuestionNumber { get; set; }
 
         public string SuccessMessage;
+        public int previousAnswer = -1;
 
         public void OnGet ()
         {
@@ -37,10 +39,9 @@ namespace QuizAsp.Pages
                 SuccessMessage = (bool)answerCorrect 
                     ? "Correct Answer" 
                     : $"Incorrect Answer. The correct answer is: {questions[currentQuestion].Answers[questions[currentQuestion].CorrectAnswer]}.";
+                TempData.TryGetValue(AnswerPreviousKey, out var answerIndex);
+                previousAnswer = (int)answerIndex;
             }
-
-
-
         }
 
         [ValidateAntiForgeryToken]
@@ -53,7 +54,7 @@ namespace QuizAsp.Pages
 
             var questions = QuizCache.LoadQuiz("Quizzes/data.txt");
 
-
+            TempData[AnswerPreviousKey] = answer;
             TempData[AnswerCorrectKey] = (answer == questions[currentQuestion].CorrectAnswer);
 
             HttpContext.Session.Set(QuestionNumberKey, BitConverter.GetBytes(currentQuestion));
