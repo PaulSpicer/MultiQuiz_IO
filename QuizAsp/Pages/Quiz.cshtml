@@ -1,0 +1,35 @@
+﻿@page
+@model QuizModel
+@{
+    ViewData["Title"] = "Home page";
+
+    bool isAnswerPage = !string.IsNullOrEmpty(Model.SuccessMessage);
+    int previousAnswer = @Model.previousAnswer;
+}
+
+<div class="quizblock">
+    <h1>A Quiz</h1>
+    Score: @Model.CurrentScore
+
+    <h3>Question @(Model.CurrentQuestionNumber + 1) of @Model.TotalQuestions</h3>
+    <h4>@Model.Question</h4>
+    <form method="post" action="/quiz">
+        @Html.AntiForgeryToken()
+        @for (var i = 0; i < Model.Answers.Length; i++)
+        {
+            <input id="rad@(i)"
+                   type="radio"
+                   name="answer"
+                   value="@i" @(isAnswerPage && i == previousAnswer ? "checked" : "") @(isAnswerPage ? "disabled":"")/><label for="rad@(i)">@Model.Answers[i]</label><br>
+        }
+        <input class="sub_button" type="submit" name="@(isAnswerPage ? "nextbutton" : "answerbutton")" value="@(isAnswerPage ? "Next Question" : "Answer")")/>
+    </form>
+    <div class="answerFeedback">
+        @if (isAnswerPage)
+        {
+            @Model.SuccessMessage
+        }
+    </div>
+</div>
+
+
