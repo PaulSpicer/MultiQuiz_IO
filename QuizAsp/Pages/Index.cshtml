@@ -12,9 +12,9 @@
 </div>
 <div class="quizblock">
     <h1>A Quiz</h1>
-    Current Score: @Model.CurrentScore
+    Score: @Model.CurrentScore
 
-
+    <h3>Question @(Model.CurrentQuestionNumber + 1) of @Model.TotalQuestions</h3>
     <h4>@Model.Question</h4>
     <form method="post" action="/index">
         @Html.AntiForgeryToken()

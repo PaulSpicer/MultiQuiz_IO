@@ -21,6 +21,7 @@ namespace QuizAsp.Pages
         public string[] Answers { get; set; }
         public int CurrentQuestionNumber { get; set; }
         public int CurrentScore { get; set; }
+        public int TotalQuestions { get; set; }
 
         public string SuccessMessage;
         public int previousAnswer = -1;
@@ -28,7 +29,7 @@ namespace QuizAsp.Pages
         public void OnGet ()
         {
             if (!HttpContext.Session.TryGetInt(QuestionNumberKey, out var currentQuestion) ||
-               (!HttpContext.Session.TryGetInt(CurrentScoreKey, out var currentScore)))
+                !HttpContext.Session.TryGetInt(CurrentScoreKey, out var currentScore))
             {
                 CurrentQuestionNumber = 0;
                 CurrentScore = 0;
@@ -42,12 +43,13 @@ namespace QuizAsp.Pages
             }
 
             var questions = QuizCache.LoadQuiz("Quizzes/data.txt");
+            TotalQuestions = questions.Count;
+
             Question = questions[CurrentQuestionNumber].Question;
             Answers = questions[CurrentQuestionNumber].Answers;
 
             if (TempData.TryGetValue(AnswerCorrectKey, out var answerCorrect))
             {
-
                 if ((bool)answerCorrect)
                 {
                     SuccessMessage = "Correct Answer";
@@ -67,28 +69,34 @@ namespace QuizAsp.Pages
         [ValidateAntiForgeryToken]
         public IActionResult OnPost (int answer, string answerbutton, string nextbutton)
         {
-            if (!HttpContext.Session.TryGetInt(QuestionNumberKey, out var currentQuestion))
+            if (!HttpContext.Session.TryGetInt(QuestionNumberKey, out var currentQuestion) ||
+                !HttpContext.Session.TryGetInt(CurrentScoreKey, out var currentScore))
             {
+                HttpContext.Session.Clear();
                 return new RedirectResult("/");
             }
-            else
+
+            CurrentQuestionNumber = currentQuestion;
+            var questions = QuizCache.LoadQuiz("Quizzes/data.txt");
+
+            if (nextbutton != null)
             {
-                CurrentQuestionNumber = currentQuestion;
-                if (nextbutton != null)
+                CurrentQuestionNumber++;
+
+                if (CurrentQuestionNumber >= questions.Count || CurrentQuestionNumber < 0)
                 {
-                    CurrentQuestionNumber++;
-                    HttpContext.Session.Set(QuestionNumberKey, BitConverter.GetBytes(CurrentQuestionNumber));
+                    HttpContext.Session.Clear();
                     return new RedirectResult("/");
                 }
+                HttpContext.Session.Set(QuestionNumberKey, BitConverter.GetBytes(CurrentQuestionNumber));
             }
 
             if (answerbutton != null)
             {
-                var questions = QuizCache.LoadQuiz("Quizzes/data.txt");
-
                 TempData[AnswerPreviousKey] = answer;
                 TempData[AnswerCorrectKey] = (answer == questions[CurrentQuestionNumber].CorrectAnswer);
-            }           
+            } 
+            
             return new RedirectResult("/");
         }
     }
