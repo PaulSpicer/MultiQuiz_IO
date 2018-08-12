@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using QuizLib;
 
 namespace QuizAsp.Pages
 {
@@ -16,19 +14,20 @@ namespace QuizAsp.Pages
         const string AnswerCorrectKey = "AnswerCorrect";
         const string AnswerPreviousKey = "AnswerPreviousIndex";
         const string CurrentScoreKey = "CurrentScore";
-        const string ThisPage = "/Quiz";
 
         public string Question { get; set; }
         public string[] Answers { get; set; }
         public int CurrentQuestionNumber { get; set; }
         public int CurrentScore { get; set; }
         public int TotalQuestions { get; set; }
+        public string Id { get; set; }
 
         public string SuccessMessage;
         public int previousAnswer = -1;
 
-        public void OnGet ()
+        public void OnGet (string id)
         {
+            Id = id;
             if (!HttpContext.Session.TryGetInt(QuestionNumberKey, out var currentQuestion) ||
                 !HttpContext.Session.TryGetInt(CurrentScoreKey, out var currentScore))
             {
@@ -42,8 +41,11 @@ namespace QuizAsp.Pages
                 CurrentQuestionNumber = currentQuestion;
                 CurrentScore = currentScore;
             }
+            if (!QuizCache.TryLoadQuiz(id, out var questions))
+            {
+                //
+            }
 
-            var questions = QuizCache.LoadQuiz("Quizzes/data.txt");
             TotalQuestions = questions.Count;
 
             Question = questions[CurrentQuestionNumber].Question;
@@ -68,17 +70,21 @@ namespace QuizAsp.Pages
         }
 
         [ValidateAntiForgeryToken]
-        public IActionResult OnPost (int answer, string answerbutton, string nextbutton)
+        public IActionResult OnPost (int answer, string answerbutton, string nextbutton, string id)
         {
             if (!HttpContext.Session.TryGetInt(QuestionNumberKey, out var currentQuestion) ||
                 !HttpContext.Session.TryGetInt(CurrentScoreKey, out var currentScore))
             {
                 HttpContext.Session.Clear();
-                return Redirect(ThisPage);
+                return Redirect("/");
             }
 
             CurrentQuestionNumber = currentQuestion;
-            var questions = QuizCache.LoadQuiz("Quizzes/data.txt");
+
+            if (!QuizCache.TryLoadQuiz(id, out var questions))
+            {
+                //TODO: QUIZ NOT FOUND - FALLBACK BEHAVIOUR
+            }
 
             if (nextbutton != null)
             {
@@ -97,25 +103,8 @@ namespace QuizAsp.Pages
                 TempData[AnswerPreviousKey] = answer;
                 TempData[AnswerCorrectKey] = (answer == questions[CurrentQuestionNumber].CorrectAnswer);
             } 
-            
-            return Redirect(ThisPage);
-        }
-    }
-
-    public static class QuizCache
-    {
-
-        private static Dictionary<string, List<QuizQuestion>> _quizzes = new Dictionary<string, List<QuizQuestion>>();
-
-        public static List<QuizQuestion> LoadQuiz (string fileName)
-        {
-            if (_quizzes.TryGetValue(fileName, out var quiz))
-            {
-                return quiz;
-            }
-            quiz = Quiz.LoadQuiz(fileName);
-            _quizzes[fileName] = quiz;
-            return quiz;
+           
+            return Redirect($"{HttpContext.Request.Path}/?id={id}");
         }
     }
 

@@ -4,5 +4,15 @@
     ViewData["Title"] = "Home page";
 }
 
-<a href="/quiz">CLICK HERE TO GO TO QUIZ</a>
+@foreach (var q in Model.quizzes)
+{
+    var quizID = q.Key;
+    var quizDesc = q.Value.Description;
+    var quizTitle = q.Value.Title;
+    var noOfQuestions = q.Value.Questions.Count.ToString();
+
+    var teststring = ($"{quizTitle} - {quizDesc} - {noOfQuestions} Questions - {quizID}");
+    @:<div> <a href="/quiz?id=@quizID">@teststring</a></div>
+}
+
 

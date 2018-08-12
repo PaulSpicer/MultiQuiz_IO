@@ -13,7 +13,7 @@
 
     <h3>Question @(Model.CurrentQuestionNumber + 1) of @Model.TotalQuestions</h3>
     <h4>@Model.Question</h4>
-    <form method="post" action="/quiz">
+    <form method="post" action="/quiz?id=@Model.Id">
         @Html.AntiForgeryToken()
         @for (var i = 0; i < Model.Answers.Length; i++)
         {
@@ -22,6 +22,7 @@
                    name="answer"
                    value="@i" @(isAnswerPage && i == previousAnswer ? "checked" : "") @(isAnswerPage ? "disabled":"")/><label for="rad@(i)">@Model.Answers[i]</label><br>
         }
+        <input type="hidden" name="id" value="@Model.Id"/>
         <input class="sub_button" type="submit" name="@(isAnswerPage ? "nextbutton" : "answerbutton")" value="@(isAnswerPage ? "Next Question" : "Answer")")/>
     </form>
     <div class="answerFeedback">

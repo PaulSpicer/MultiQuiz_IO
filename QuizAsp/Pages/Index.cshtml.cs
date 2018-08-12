@@ -12,9 +12,13 @@ namespace QuizAsp.Pages
 {
     public class IndexModel : PageModel
     {
+        public Dictionary<string, CompleteQuiz> quizzes;
+
         public void OnGet ()
         {
-
+            QuizCache.LoadAllQuizzes();
+            quizzes = QuizCache.ShowAllQuizzes();
+            //expose ID, description, #ofquestions/, title
         }        
     }
 }
